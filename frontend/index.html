@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lost & Found Portal</title>
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f2f2f2; }
+    h1 { text-align: center; }
+    form, .items { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+    .card { border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 6px; background: #fff; }
+    input, select, textarea { width: 100%; padding: 8px; margin-top: 10px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #ccc; }
+    button { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #218838; }
+  </style>
+</head>
+<body>
+
+  <h1>Lost & Found Portal</h1>
+
+  <form id="itemForm">
+    <label>Item Name:</label>
+    <input type="text" required />
+    
+    <label>Description:</label>
+    <textarea rows="3" required></textarea>
+    
+    <label>Date:</label>
+    <input type="date" required />
+    
+    <label>Location:</label>
+    <input type="text" required />
+    
+    <label>Contact Info:</label>
+    <input type="text" required />
+
+    <label>Type:</label>
+    <select required>
+      <option value="lost">Lost</option>
+      <option value="found">Found</option>
+    </select>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div class="items" id="items">
+    <h2 style="text-align:center;">All Items</h2>
+  </div>
+
+  <script>
+    // 🔥 Replace this with your actual Firebase config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_MESSAGING_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // 🔌 Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore(app);
+
+    const form = document.getElementById('itemForm');
+    const itemsDiv = document.getElementById('items');
+
+    // 📤 Submit Data to Firestore
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = form.elements[0].value;
+      const description = form.elements[1].value;
+      const date = form.elements[2].value;
+      const location = form.elements[3].value;
+      const contact = form.elements[4].value;
+      const type = form.elements[5].value;
+
+      try {
+        await db.collection("items").add({
+          name,
+          description,
+          date,
+          location,
+          contact,
+          type
+        });
+
+        alert("Item submitted successfully!");
+        form.reset();
+        loadItems(); // reload list
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    });
+
+    // 📥 Load Items from Firestore
+    async function loadItems() {
+      itemsDiv.innerHTML = '<h2 style="text-align:center;">All Items</h2>'; // reset view
+      const snapshot = await db.collection("items").get();
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const card = `
+          <div class="card">
+            <h3>${data.type.toUpperCase()}: ${data.name}</h3>
+            <p>${data.description}</p>
+            <p><strong>Date:</strong> ${data.date}</p>
+            <p><strong>Location:</strong> ${data.location}</p>
+            <p><strong>Contact:</strong> ${data.contact}</p>
+          </div>
+        `;
+        itemsDiv.innerHTML += card;
+      });
+    }
+
+    loadItems();
+  </script>
+
+</body>
+</html>
