@@ -20,12 +20,12 @@ int main(){
             case '*':
                 printf("The multiplication of both the numbers %d and %d is: %d", a, b, a*b);
                 break;
-            case '/':
+            case '/': 
                 printf("The division of %d by %d is: %d", a, b, a/b);
                 break;
-            case '^':
+            case '^': 
                 printf("%d raised to the power of %d is: %lf", a, b, pow(a, b) );
-            break;
+                break;
         }
     }
     
