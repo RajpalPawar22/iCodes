@@ -7,7 +7,7 @@ int main()
     scanf("%d", &n);
 
     if (n>=1){
-        printf("THE number %d is a whole numgber.", n);
+        printf("THE number %d is a natural number.", n);
     }
     else {
         printf("not a whole number.");
