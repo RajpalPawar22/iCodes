@@ -21,7 +21,7 @@ int main()
     //     printf("%d * %d=%d\n",n, i, n*i);
     // }
 
-    //factorial of a num
+    // factorial of a num
     // int n, i=n, sum=1;
     // printf("eNTER a number:");
     // scanf("%d", &n);
@@ -30,7 +30,7 @@ int main()
     // }
     // printf("The factorial of the number %d is : %d", n, sum);
 
-    //reverse table 
+    // reverse table 
     // int i=10, n;
     // printf("enter the number for the table:");
     // scanf("%d", &n);

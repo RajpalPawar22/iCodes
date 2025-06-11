@@ -25,5 +25,3 @@ int main()
 }
 // yayyy bana diya!
 // sync checkkkkkkk
-
-
